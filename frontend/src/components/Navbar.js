@@ -17,7 +17,7 @@ function Navbar({ activeMenu, onMenuChange, onComingSoonClick }) {
       id: 'linear',
       label: 'Aljabar Linear',
       icon: MdLinearScale,
-      available: false,
+      available: true,
       description: 'Dekomposisi matriks & eigenvalue'
     },
     {

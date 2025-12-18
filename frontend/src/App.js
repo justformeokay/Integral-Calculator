@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import Calculator from './components/Calculator';
+import LinearAlgebra from './components/LinearAlgebra';
 import Results from './components/Results';
+import LinearAlgebraResults from './components/LinearAlgebraResults';
 import ComingSoonModal from './components/ComingSoonModal';
-import { MdCalculate, MdErrorOutline } from 'react-icons/md';
+import { MdCalculate, MdErrorOutline, MdLinearScale } from 'react-icons/md';
 
 function App() {
   const [activeMenu, setActiveMenu] = useState('integral');
@@ -30,7 +32,7 @@ function App() {
     setError(null);
     
     try {
-      const apiUrl = 'https://python.karyadeveloperindonesia.com';
+      const apiUrl = 'https://mathematics-api.karyadeveloperindonesia.com';
       
       const response = await fetch(`${apiUrl}/api/volume`, {
         method: 'POST',
@@ -62,6 +64,63 @@ function App() {
     }
   };
 
+  const handleLinearAlgebraCalculate = async (endpoint, payload) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const apiUrl = 'https://mathematics-api.karyadeveloperindonesia.com';
+      
+      const response = await fetch(`${apiUrl}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'API Error');
+      }
+
+      const data = await response.json();
+      setResults(data);
+    } catch (err) {
+      setError(
+        err.message || 'Terjadi kesalahan saat menghubungi server'
+      );
+      setResults(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getHeaderContent = () => {
+    switch(activeMenu) {
+      case 'integral':
+        return {
+          icon: <MdCalculate />,
+          title: 'Kalkulator Integral',
+          subtitle: 'Hitung volume solid of revolution dengan presisi tinggi'
+        };
+      case 'linear':
+        return {
+          icon: <MdLinearScale />,
+          title: 'Aljabar Linear',
+          subtitle: 'Analisis matriks: determinan, eigenvalue, dekomposisi, dan lebih'
+        };
+      default:
+        return {
+          icon: <MdCalculate />,
+          title: 'Kalkulator Integral',
+          subtitle: 'Hitung volume solid of revolution dengan presisi tinggi'
+        };
+    }
+  };
+
+  const header = getHeaderContent();
+
   return (
     <>
       <Navbar 
@@ -73,14 +132,24 @@ function App() {
         <div className="container">
           <header className="header">
             <h1>
-              <MdCalculate />
-              Kalkulator Integral
+              {header.icon}
+              {header.title}
             </h1>
-            <p>Hitung volume solid of revolution dengan presisi tinggi</p>
+            <p>{header.subtitle}</p>
           </header>
 
           <main className="main-content">
-            <Calculator onCalculate={handleCalculate} loading={loading} />
+            {activeMenu === 'integral' && (
+              <>
+                <Calculator onCalculate={handleCalculate} loading={loading} />
+              </>
+            )}
+            
+            {activeMenu === 'linear' && (
+              <>
+                <LinearAlgebra onCalculate={handleLinearAlgebraCalculate} loading={loading} />
+              </>
+            )}
             
             {error && (
               <div className="error-box">
@@ -91,8 +160,12 @@ function App() {
               </div>
             )}
             
-            {results && (
+            {results && activeMenu === 'integral' && (
               <Results data={results} />
+            )}
+
+            {results && activeMenu === 'linear' && (
+              <LinearAlgebraResults data={results} />
             )}
           </main>
 
