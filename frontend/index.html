@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solid of Revolution Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 0;
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            padding: 30px;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .bounds-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .calculate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .examples {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .examples h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .example-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .example-item:hover {
+            background: #e9ecef;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .result-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .volume-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .volume-display .label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .volume-display .value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .integral-display {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .plot-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .plot-container h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .plot-container img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .plot-3d-container {
+            width: 100%;
+            height: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            display: none;
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #fcc;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Solid of Revolution Calculator</h1>
+            <p>Calculate volumes using integral calculus with interactive 3D visualization</p>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <form id="calculatorForm">
+                    <div class="form-group">
+                        <label for="function">Function f(x):</label>
+                        <input type="text" id="function" name="function" placeholder="e.g., x**2, sin(x), sqrt(x)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Integration Bounds:</label>
+                        <div class="bounds-group">
+                            <div>
+                                <input type="number" id="lowerBound" name="lowerBound" placeholder="Lower (a)" step="0.1" value="0" required>
+                            </div>
+                            <div>
+                                <input type="number" id="upperBound" name="upperBound" placeholder="Upper (b)" step="0.1" value="2" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="axis">Axis of Rotation:</label>
+                        <select id="axis" name="axis">
+                            <option value="x-axis">X-axis (Disk Method)</option>
+                            <option value="y-axis">Y-axis (Shell Method)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">Calculate Volume</button>
+                </form>
+
+                <div class="examples">
+                    <h3>Example Functions:</h3>
+                    <div class="example-item" onclick="loadExample('x**2', 0, 2, 'x-axis')">
+                        f(x) = x² [0, 2]
+                    </div>
+                    <div class="example-item" onclick="loadExample('sqrt(x)', 0, 4, 'x-axis')">
+                        f(x) = √x [0, 4]
+                    </div>
+                    <div class="example-item" onclick="loadExample('sin(x)', 0, 3.14159, 'x-axis')">
+                        f(x) = sin(x) [0, π]
+                    </div>
+                    <div class="example-item" onclick="loadExample('exp(-x)', 0, 2, 'x-axis')">
+                        f(x) = e⁻ˣ [0, 2]
+                    </div>
+                    <div class="example-item" onclick="loadExample('1/x', 1, 3, 'x-axis')">
+                        f(x) = 1/x [1, 3]
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div id="error" class="error"></div>
+                
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Calculating volume and generating visualizations...</p>
+                </div>
+
+                <div id="results" class="results">
+                    <div class="volume-display">
+                        <div class="label">Calculated Volume</div>
+                        <div class="value" id="volumeValue">0</div>
+                        <div class="label" style="margin-top: 10px;">cubic units</div>
+                    </div>
+
+                    <div class="result-card">
+                        <h2>📐 Mathematical Details</h2>
+                        <div>
+                            <strong>Function:</strong> <span id="functionDisplay"></span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <strong>Bounds:</strong> [<span id="boundsDisplay"></span>]
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <strong>Rotation Axis:</strong> <span id="axisDisplay"></span>
+                        </div>
+                        <div class="integral-display" id="integralDisplay"></div>
+                        <div style="margin-top: 10px; font-size: 14px; color: #666;">
+                            <strong>Symbolic Result:</strong> <span id="symbolicResult"></span>
+                        </div>
+                    </div>
+
+                    <div class="plot-container">
+                        <h3>📊 2D Function Plot</h3>
+                        <img id="plot2d" src="" alt="2D Plot">
+                    </div>
+
+                    <div class="plot-container">
+                        <h3>🎨 3D Solid of Revolution</h3>
+                        <div class="plot-3d-container" id="plot3d"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api/volume';
+
+        document.getElementById('calculatorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const functionInput = document.getElementById('function').value;
+            const lowerBound = parseFloat(document.getElementById('lowerBound').value);
+            const upperBound = parseFloat(document.getElementById('upperBound').value);
+            const axis = document.getElementById('axis').value;
+
+            // Validation
+            if (upperBound <= lowerBound) {
+                showError('Upper bound must be greater than lower bound');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').classList.add('visible');
+            document.getElementById('results').classList.remove('visible');
+            document.getElementById('error').classList.remove('visible');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        function: functionInput,
+                        lower_bound: lowerBound,
+                        upper_bound: upperBound,
+                        axis: axis
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Calculation failed');
+                }
+
+                const data = await response.json();
+                displayResults(data);
+
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').classList.remove('visible');
+            }
+        });
+
+        function displayResults(data) {
+            document.getElementById('volumeValue').textContent = data.volume_numerical.toFixed(4);
+            document.getElementById('functionDisplay').textContent = `f(x) = ${data.function}`;
+            document.getElementById('boundsDisplay').textContent = `${data.bounds.lower}, ${data.bounds.upper}`;
+            document.getElementById('axisDisplay').textContent = data.axis;
+            document.getElementById('integralDisplay').textContent = data.integral_expression;
+            document.getElementById('symbolicResult').textContent = data.volume_symbolic || 'Computed numerically';
+            
+            document.getElementById('plot2d').src = data.plot_2d;
+            document.getElementById('plot3d').innerHTML = data.plot_3d;
+
+            document.getElementById('results').classList.add('visible');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = `Error: ${message}`;
+            errorDiv.classList.add('visible');
+        }
+
+        function loadExample(func, lower, upper, axis) {
+            document.getElementById('function').value = func;
+            document.getElementById('lowerBound').value = lower;
+            document.getElementById('upperBound').value = upper;
+            document.getElementById('axis').value = axis;
+        }
+    </script>
+</body>
+</html>
