@@ -1,7 +1,7 @@
 .calculator {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
-  padding: 40px;
+  padding: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   backdrop-filter: blur(20px);
@@ -17,13 +17,13 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 18px;
 }
 
 .form h2 {
   color: #333;
-  margin-bottom: 10px;
-  font-size: 1.8rem;
+  margin-bottom: 5px;
+  font-size: 1.4rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -32,13 +32,13 @@
 
 .form h2 svg {
   color: #667eea;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   animation: fadeIn 0.6s ease forwards;
 }
 
@@ -62,7 +62,7 @@
 .form-group label {
   font-weight: 700;
   color: #333;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -72,15 +72,15 @@
 
 .form-group label svg {
   color: #667eea;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .form-group input,
 .form-group select {
-  padding: 14px 16px;
+  padding: 11px 13px;
   border: 2px solid #e8eef7;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   font-family: 'Courier New', monospace;
   background-color: #f8f9ff;
@@ -129,29 +129,30 @@
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 15px;
 }
 
 .submit-btn {
-  padding: 16px 24px;
+  padding: 13px 20px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
+  border-radius: 10px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-top: 15px;
+  gap: 10px;
+  margin-top: 10px;
   box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
+  font-size: 0.95rem;
 }
 
 .submit-btn::before {
@@ -286,10 +287,140 @@
 
 @media (max-width: 768px) {
   .calculator {
-    padding: 20px;
+    padding: 18px;
+    border-radius: 15px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form {
+    gap: 15px;
+  }
+
+  .form h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+
+  .submit-btn {
+    padding: 11px 16px;
+    font-size: 0.85rem;
+    gap: 8px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+
+  .examples {
+    padding: 15px;
+    margin-top: 12px;
+    border-radius: 10px;
+  }
+
+  .examples h3 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .examples li {
+    font-size: 0.85rem;
+    padding: 8px 0;
+    gap: 8px;
+  }
+
+  .examples code {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .form {
+    gap: 12px;
+  }
+
+  .form h2 {
+    font-size: 1.1rem;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+
+  .form-group {
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 9px 10px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+
+  .form-group small {
+    font-size: 0.75rem;
+    margin-top: -3px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .submit-btn {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    gap: 6px;
+    margin-top: 6px;
+    border-radius: 6px;
+    letter-spacing: 0px;
+  }
+
+  .submit-btn svg {
+    font-size: 1rem;
+  }
+
+  .examples {
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+  }
+
+  .examples h3 {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .examples li {
+    font-size: 0.8rem;
+    padding: 6px 0;
+    gap: 6px;
+  }
+
+  .examples code {
+    font-size: 0.7rem;
+    padding: 2px 5px;
   }
 }
