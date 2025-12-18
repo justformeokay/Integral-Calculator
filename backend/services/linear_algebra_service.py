@@ -26,29 +26,27 @@ class LinearAlgebraService:
             raise ValueError(f"Invalid matrix format: {str(e)}")
     
     def matrix_determinant(self, matrix: List[List[float]]) -> Dict:
-        """Calculate matrix determinant"""
         try:
             A = self.parse_matrix(matrix)
-            
             if A.shape[0] != A.shape[1]:
                 raise ValueError("Matrix must be square to calculate determinant")
             
             det = np.linalg.det(A)
             
-            # Symbolic calculation for small matrices
             symbolic_det = None
             if A.shape[0] <= 4:
                 try:
+                    # Gunakan nsimplify agar SymPy mencoba mengubah float ke rasional
                     A_sym = sp.Matrix(A.tolist())
-                    symbolic_det = str(A_sym.det())
+                    symbolic_det = str(sp.simplify(A_sym.det()))
                 except:
                     pass
             
             return {
                 'determinant': float(det),
                 'symbolic_determinant': symbolic_det,
-                'matrix_size': A.shape,
-                'is_singular': abs(det) < 1e-10
+                'matrix_size': [int(s) for s in A.shape], # Pastikan elemennya int standar
+                'is_singular': bool(abs(det) < 1e-10)     # PAKSA KE BOOL PYTHON
             }
         except Exception as e:
             raise ValueError(f"Error calculating determinant: {str(e)}")
@@ -261,13 +259,13 @@ class LinearAlgebraService:
                     result = A @ B
                 
                 result_data['result'] = result.tolist()
-                result_data['matrix_b_shape'] = B.shape
+                result_data['matrix_b_shape'] = list(B.shape)  # ✅ Jadi list
                 
             else:
                 raise ValueError(f"Unknown operation: {operation}")
             
-            result_data['matrix_a_shape'] = A.shape
-            result_data['result_shape'] = result.shape if 'result' in locals() else None
+            result_data['matrix_a_shape'] = list(A.shape)  # ✅ Jadi list
+            result_data['result_shape'] = list(result.shape) if 'result' in locals() else None  # ✅ Jadi list
             
             return result_data
             
@@ -275,15 +273,14 @@ class LinearAlgebraService:
             raise ValueError(f"Error in matrix operation: {str(e)}")
     
     def matrix_rank(self, matrix: List[List[float]]) -> Dict:
-        """Calculate matrix rank"""
         try:
             A = self.parse_matrix(matrix)
             rank = np.linalg.matrix_rank(A)
             
             return {
                 'rank': int(rank),
-                'matrix_shape': A.shape,
-                'is_full_rank': rank == min(A.shape)
+                'matrix_shape': [int(s) for s in A.shape],
+                'is_full_rank': bool(rank == min(A.shape)) # PAKSA KE BOOL PYTHON
             }
         except Exception as e:
             raise ValueError(f"Error calculating rank: {str(e)}")
