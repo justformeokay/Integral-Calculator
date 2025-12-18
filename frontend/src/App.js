@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
 import './App.css';
+import Navbar from './components/Navbar';
 import Calculator from './components/Calculator';
 import Results from './components/Results';
-import { MdCalculate, MdHeartBroken, MdErrorOutline } from 'react-icons/md';
+import ComingSoonModal from './components/ComingSoonModal';
+import { MdCalculate, MdErrorOutline } from 'react-icons/md';
 
 function App() {
+  const [activeMenu, setActiveMenu] = useState('integral');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [comingSoonFeature, setComingSoonFeature] = useState(null);
+  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
+
+  const handleMenuChange = (menuId) => {
+    setActiveMenu(menuId);
+    setResults(null);
+    setError(null);
+  };
+
+  const handleComingSoonClick = (feature) => {
+    setComingSoonFeature(feature);
+    setIsComingSoonOpen(true);
+  };
 
   const handleCalculate = async (formData) => {
     setLoading(true);
@@ -47,39 +63,54 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <div className="container">
-        <header className="header">
-          <h1>
-            <MdCalculate />
-            Kalkulator Integral
-          </h1>
-          <p>Hitung volume solid of revolution dengan presisi tinggi</p>
-        </header>
+    <>
+      <Navbar 
+        activeMenu={activeMenu} 
+        onMenuChange={handleMenuChange}
+        onComingSoonClick={handleComingSoonClick}
+      />
+      <div className="app">
+        <div className="container">
+          <header className="header">
+            <h1>
+              <MdCalculate />
+              Kalkulator Integral
+            </h1>
+            <p>Hitung volume solid of revolution dengan presisi tinggi</p>
+          </header>
 
-        <main className="main-content">
-          <Calculator onCalculate={handleCalculate} loading={loading} />
-          
-          {error && (
-            <div className="error-box">
-              <MdErrorOutline />
-              <div>
-                <strong>Error:</strong> {error}
+          <main className="main-content">
+            <Calculator onCalculate={handleCalculate} loading={loading} />
+            
+            {error && (
+              <div className="error-box">
+                <MdErrorOutline />
+                <div>
+                  <strong>Error:</strong> {error}
+                </div>
               </div>
-            </div>
-          )}
-          
-          {results && (
-            <Results data={results} />
-          )}
-        </main>
+            )}
+            
+            {results && (
+              <Results data={results} />
+            )}
+          </main>
 
-        <footer className="footer">
-          <p>Made with <MdHeartBroken style={{display: 'inline', color: '#ff6b6b'}} /> for Integral Calculations</p>
-        </footer>
+          <footer className="footer">
+            <p>Design and Develop by Putra Budianto</p>
+            <p>Visit me <a href="https://karyadeveloperindonesia.com" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none' }}>karyadeveloperindonesia.com</a></p>
+          </footer>
+        </div>
       </div>
-    </div>
+      
+      <ComingSoonModal 
+        isOpen={isComingSoonOpen}
+        feature={comingSoonFeature}
+        onClose={() => setIsComingSoonOpen(false)}
+      />
+    </>
   );
 }
+
 
 export default App;

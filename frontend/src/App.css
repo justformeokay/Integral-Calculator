@@ -1,27 +1,21 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
   min-height: 100vh;
 }
 
 .app {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 70px);
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 15px;
+  padding: 20px 15px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
-  padding-top: 20px;
-  padding-bottom: 20px;
   overflow-x: hidden;
 }
 
@@ -36,13 +30,13 @@ body {
   max-width: 1400px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .header {
   text-align: center;
   color: white;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   animation: slideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -169,7 +163,7 @@ body {
   }
 
   .header {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 
   .main-content {
@@ -190,7 +184,7 @@ body {
   }
 
   .footer {
-    margin-top: 30px;
+    margin-top: 25px;
     padding-top: 15px;
   }
 
@@ -200,6 +194,7 @@ body {
 
   .app {
     padding: 10px;
+    min-height: calc(100vh - 60px);
   }
 }
 

@@ -4,7 +4,7 @@ import Plot3D from './Plot3D';
 import './Results.css';
 import { MdShowChart, Md3dRotation, MdFunctions, MdCalculate, MdLightbulb, MdInfo } from 'react-icons/md';
 import { MdShowChart as Chart2DIcon } from 'react-icons/md';
-import { InlineMath, BlockMath } from 'react-katex';
+import { BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 
 function Results({ data }) {
@@ -13,18 +13,6 @@ function Results({ data }) {
   const formatNumber = (num) => {
     if (typeof num !== 'number') return num;
     return num.toFixed(6);
-  };
-
-  const renderIntegralExpression = (expr) => {
-    if (!expr) return 'Integral calculation';
-    
-    // Coba replace LaTeX symbols dengan simbol Unicode yang lebih baik
-    return expr
-      .replace(/\\pi/g, 'π')
-      .replace(/\\cdot/g, '·')
-      .replace(/\\left/g, '')
-      .replace(/\\right/g, '')
-      .replace(/\^/g, '^');
   };
 
   return (
@@ -47,7 +35,7 @@ function Results({ data }) {
         <div className="info-item">
           <label><Md3dRotation /> Sumbu Rotasi</label>
           <div className="info-value">
-            {data.axis === 'x-axis' ? '↔️ Sumbu X' : '↕️ Sumbu Y'}
+            {data.axis === 'x-axis' ? 'Sumbu X' : '↕️ Sumbu Y'}
           </div>
         </div>
       </div>

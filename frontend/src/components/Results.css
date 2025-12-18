@@ -292,7 +292,7 @@
 
 .tab-content {
   background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-  padding: 18px;
+  padding: 0;
   border-radius: 12px;
   min-height: 400px;
   display: flex;
@@ -300,6 +300,8 @@
   align-items: center;
   border: 1px solid rgba(102, 126, 234, 0.1);
   animation: fadeInContent 0.5s ease-out;
+  width: 100%;
+  position: relative;
 }
 
 @keyframes fadeInContent {
@@ -470,7 +472,7 @@
   }
 
   .tab-content {
-    padding: 15px;
+    padding: 0;
     min-height: 320px;
     border-radius: 10px;
   }
@@ -606,7 +608,7 @@
   }
 
   .tab-content {
-    padding: 12px;
+    padding: 0;
     min-height: 280px;
     border-radius: 8px;
   }
